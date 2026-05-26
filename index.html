@@ -2,6 +2,20 @@
 <html class="light" lang="en">
 
 <head>
+    <script>
+        // Immediately apply saved or system theme to prevent theme flash
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+            } else {
+                document.documentElement.classList.add('light');
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amul Cool Rose | The Ultimate Refreshment</title>
@@ -30,9 +44,9 @@
             theme: {
                 extend: {
                     "colors": {
-                        "on-surface-variant": "#5b3f43",
-                        "on-surface": "#1a1c1c",
-                        "surface": "#f9f9f9",
+                        "on-surface-variant": "var(--text-muted-page)",
+                        "on-surface": "var(--text-page)",
+                        "surface": "var(--bg-page)",
                         "primary-fixed-dim": "#ffb2be",
                         "tertiary-container": "#c5447f",
                         "primary-fixed": "#ffd9de",
@@ -44,39 +58,40 @@
                         "on-primary-fixed": "#400014",
                         "error": "#ba1a1a",
                         "secondary-fixed": "#f4dce4",
-                        "surface-bright": "#f9f9f9",
-                        "surface-container": "#eeeeee",
+                        "surface-bright": "var(--bg-page)",
+                        "surface-container": "var(--surface-container-high)",
                         "secondary": "#6b5a60",
                         "on-tertiary-fixed": "#3e0020",
                         "outline": "#8f6f73",
                         "on-secondary-container": "#716066",
-                        "surface-container-high": "#e8e8e8",
+                        "surface-container-high": "var(--surface-container-high)",
                         "tertiary-fixed-dim": "#ffb0cc",
                         "on-secondary-fixed": "#25181e",
                         "on-primary-fixed-variant": "#900038",
-                        "surface-container-lowest": "#ffffff",
+                        "surface-container-lowest": "var(--bg-page)",
                         "on-error": "#ffffff",
                         "error-container": "#ffdad6",
                         "inverse-surface": "#2f3131",
                         "on-primary": "#ffffff",
-                        "surface-variant": "#e2e2e2",
+                        "surface-variant": "var(--surface-container-low)",
                         "on-tertiary": "#ffffff",
                         "inverse-primary": "#ffb2be",
-                        "on-background": "#1a1c1c",
-                        "surface-container-low": "#f3f3f4",
+                        "on-background": "var(--text-page)",
+                        "surface-container-low": "var(--surface-container-low)",
                         "on-primary-container": "#fffbff",
                         "on-tertiary-fixed-variant": "#890f50",
-                        "background": "#f9f9f9",
+                        "background": "var(--bg-page)",
                         "secondary-fixed-dim": "#d7c1c8",
                         "tertiary": "#a52a66",
                         "on-error-container": "#93000a",
-                        "secondary-container": "#f4dce4",
+                        "secondary-container": "var(--surface-container-low)",
                         "surface-tint": "#bc004b",
                         "primary": "#b80049",
-                        "surface-container-highest": "#e2e2e2",
+                        "surface-container-highest": "var(--surface-container-highest)",
                         "tertiary-fixed": "#ffd9e4",
                         "inverse-on-surface": "#f0f1f1",
-                        "surface-dim": "#dadada"
+                        "surface-dim": "var(--surface-container-low)",
+                        "card-bg-white": "var(--card-bg-white)"
                     },
                     "borderRadius": {
                         "DEFAULT": "0.25rem",
@@ -118,16 +133,19 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--glass-card-bg);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(226, 22, 95, 0.1);
+            border: 1px solid var(--border-card);
+            transition: background 0.5s ease, border-color 0.5s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .liquid-bg {
-            background: radial-gradient(circle at 50% 50%, #f4dce4 0%, #f9f9f9 100%);
+            background: radial-gradient(circle at 50% 50%, var(--liquid-radial-1) 0%, var(--liquid-radial-2) 100%);
+            transition: background 0.5s ease;
         }
 
         .splash-shape {
@@ -135,7 +153,7 @@
         }
 
         .hover-lift {
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
         }
 
         .hover-lift:hover {
@@ -178,13 +196,21 @@
                 <a href="#nutrition" class="nav-link" data-target="nutrition">Nutrition</a>
             </nav>
             <div class="header-actions">
+                <button id="theme-toggle" class="theme-toggle-btn mr-4 text-on-surface-variant hover:text-primary transition-all duration-300 p-2.5 rounded-full hover:bg-primary/10 flex items-center justify-center" aria-label="Toggle Theme">
+                    <i data-lucide="moon" class="w-5 h-5"></i>
+                </button>
                 <a href="#cta" class="btn btn-primary" data-target="cta">
                     Find a Store
                 </a>
             </div>
-            <button class="mobile-nav-toggle" aria-label="Toggle navigation">
-                <i data-lucide="menu"></i>
-            </button>
+            <div class="flex items-center gap-2 md:hidden">
+                <button id="theme-toggle-mobile" class="theme-toggle-btn text-on-surface-variant hover:text-primary transition-all duration-300 p-2.5 rounded-full hover:bg-primary/10 flex items-center justify-center" aria-label="Toggle Theme">
+                    <i data-lucide="moon" class="w-5 h-5"></i>
+                </button>
+                <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -337,7 +363,7 @@
                     <h2 class="text-headline-xl font-headline-xl text-on-surface">The Craft Behind The Chill</h2>
                     <div class="space-y-6">
                         <div
-                            class="flex gap-4 items-start p-6 bg-white rounded-3xl shadow-sm hover:shadow-md transition-shadow">
+                            class="flex gap-4 items-start p-6 bg-card-bg-white rounded-3xl shadow-sm hover:shadow-md transition-shadow">
                             <div class="bg-primary/10 p-3 rounded-full">
                                 <span class="material-symbols-outlined text-primary"
                                     data-icon="verified">verified</span>
@@ -349,7 +375,7 @@
                             </div>
                         </div>
                         <div
-                            class="flex gap-4 items-start p-6 bg-white rounded-3xl shadow-sm hover:shadow-md transition-shadow">
+                            class="flex gap-4 items-start p-6 bg-card-bg-white rounded-3xl shadow-sm hover:shadow-md transition-shadow">
                             <div class="bg-primary/10 p-3 rounded-full">
                                 <span class="material-symbols-outlined text-primary" data-icon="eco">eco</span>
                             </div>
@@ -367,7 +393,7 @@
         <!-- Nutrition Section -->
         <section id="nutrition" class="py-24 liquid-bg">
             <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-                <div class="bg-white rounded-[3rem] p-12 lg:p-20 shadow-xl border border-primary/5">
+                <div class="bg-card-bg-white rounded-[3rem] p-12 lg:p-20 shadow-xl border border-primary/5">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         <div>
                             <h2 class="text-headline-lg font-headline-lg text-on-surface mb-6">Nutrition Facts</h2>

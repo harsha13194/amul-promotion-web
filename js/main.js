@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initScrollStorytelling();
         initRosePetals();
         initNavigationEffects();
+        initThemeToggle();
     };
 
     // Helper to draw a specific frame on a canvas (Cover mode to fill full screen)
@@ -381,6 +382,60 @@ document.addEventListener('DOMContentLoaded', () => {
         // Run once initially
         checkScrollHeader();
         highlightActiveLinks();
+    };
+
+    // -------------------------------------------------------------------------
+    // 6. Light / Dark Theme Toggle
+    // -------------------------------------------------------------------------
+    const initThemeToggle = () => {
+        const themeToggles = document.querySelectorAll('.theme-toggle-btn');
+        const htmlElement = document.documentElement;
+
+        // Function to update the icons based on active mode
+        const updateThemeUI = (isDark) => {
+            themeToggles.forEach(btn => {
+                btn.innerHTML = `<i data-lucide="${isDark ? 'sun' : 'moon'}" class="w-5 h-5"></i>`;
+            });
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+        };
+
+        // Determine initial theme state
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        let isDark = savedTheme === 'dark' || (!savedTheme && systemPrefersDark);
+
+        // Apply initial state
+        if (isDark) {
+            htmlElement.classList.add('dark');
+            htmlElement.classList.remove('light');
+        } else {
+            htmlElement.classList.add('light');
+            htmlElement.classList.remove('dark');
+        }
+        updateThemeUI(isDark);
+
+        // Click handler for toggles
+        themeToggles.forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation(); // Avoid triggering navigation scrolls or drawer closes
+                isDark = !htmlElement.classList.contains('dark');
+                
+                if (isDark) {
+                    htmlElement.classList.add('dark');
+                    htmlElement.classList.remove('light');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    htmlElement.classList.add('light');
+                    htmlElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                }
+                
+                updateThemeUI(isDark);
+            });
+        });
     };
 
     // Start preloading frames

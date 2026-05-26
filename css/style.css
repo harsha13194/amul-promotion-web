@@ -11,6 +11,38 @@
     --text-muted: hsl(340, 15%, 72%);
     --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     --font-heading: 'Outfit', sans-serif;
+
+    /* Theme-specific variables */
+    --bg-page: #f9f9f9;
+    --text-page: #1a1c1c;
+    --text-muted-page: #5b3f43;
+    --surface-container-low: #f3f3f4;
+    --surface-container-high: #e8e8e8;
+    --surface-container-highest: #e2e2e2;
+    --card-bg-white: #ffffff;
+    --glass-card-bg: rgba(255, 255, 255, 0.7);
+    --border-card: rgba(226, 22, 95, 0.1);
+    --liquid-radial-1: #f4dce4;
+    --liquid-radial-2: #f9f9f9;
+    --header-scrolled-text: #1a1c1c;
+    --header-scrolled-muted: #5b3f43;
+}
+
+html.dark {
+    /* Sleek, premium dark plum-themed dark mode */
+    --bg-page: hsl(343, 50%, 6%);
+    --text-page: #fbebed;
+    --text-muted-page: #d4a5b0;
+    --surface-container-low: hsl(343, 40%, 10%);
+    --surface-container-high: hsl(343, 40%, 12%);
+    --surface-container-highest: hsl(343, 40%, 14%);
+    --card-bg-white: hsl(343, 40%, 9%);
+    --glass-card-bg: rgba(43, 20, 26, 0.5);
+    --border-card: rgba(255, 41, 112, 0.25);
+    --liquid-radial-1: hsl(343, 40%, 12%);
+    --liquid-radial-2: hsl(343, 50%, 6%);
+    --header-scrolled-text: #fbebed;
+    --header-scrolled-muted: #d4a5b0;
 }
 
 /* Base Styles */
@@ -189,7 +221,7 @@ body {
 }
 
 .main-header.scrolled .logo {
-    color: #1a1c1c;
+    color: var(--header-scrolled-text);
     text-shadow: none;
 }
 
@@ -235,7 +267,7 @@ body {
 }
 
 .main-header.scrolled .nav-link {
-    color: #5b3f43;
+    color: var(--header-scrolled-muted);
     text-shadow: none;
 }
 
@@ -282,7 +314,7 @@ body {
 }
 
 .main-header.scrolled .mobile-nav-toggle {
-    color: #1a1c1c;
+    color: var(--header-scrolled-text);
 }
 
 /* -------------------------------------------------------------------------
