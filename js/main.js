@@ -1,4 +1,4 @@
-// amul cool Rose Landing Page JavaScript Logic
+// Premium Rose Milk Landing Page JavaScript Logic
 
 document.addEventListener('DOMContentLoaded', () => {
     // -------------------------------------------------------------------------
